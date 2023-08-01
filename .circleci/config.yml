@@ -39,7 +39,6 @@ jobs:
           name: Print World
           command: |
             echo "Sailor"
-    requires: [print_hello]
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
@@ -48,5 +47,7 @@ workflows:
     # Inside the workflow, you define the jobs you want to run.
     jobs:
       - build-and-test
-        print_hello
-        print_world
+      - print_hello
+      - print_world:
+          requires: 
+            - print_hello
