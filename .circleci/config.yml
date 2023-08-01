@@ -39,15 +39,24 @@ jobs:
           name: Print World
           command: |
             echo "Sailor"
-
+  print_dude:
+     docker: 
+      - image: circleci/node:13.8.0
+     steps:
+      - run:
+          name: Print Dude
+          command: |
+            echo $DUDE
+   
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
   sample: # This is the name of the workflow, feel free to change it to better match your workflow.
     # Inside the workflow, you define the jobs you want to run.
     jobs:
-      - build-and-test
-      - print_hello
-      - print_world:
-          requires: 
-            - print_hello
+      - print_dude
+#      - build-and-test
+#      - print_hello
+#      - print_world:
+#          requires: 
+#            - print_hello
