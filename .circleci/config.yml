@@ -34,9 +34,9 @@ jobs:
     docker: 
       - image: circleci/node:13.8.0
     steps:
-      - run: echo "Hello sailor" > myworkspace/output.txt
+      - run: echo "Hello sailor"
       - print_pipeline_id
-      - run: return 1
+      - run: exit 1
       - run: 
           command: echo "Darn it!"
           when: on_fail
