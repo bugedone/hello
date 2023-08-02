@@ -28,10 +28,8 @@ jobs:
       - image: circleci/node:13.8.0
     working_directory: /tmp
     steps:
-      - run:
-          name: Save message
-          command: |
-            echo "Hello sailor" > myworkspace/output.txt
+      - run: mkdir -p myworkspace
+      - run: echo "Hello sailor" > myworkspace/output.txt
       - persist_to_workspace:
           root: /tmp/myworkspace
           paths:
