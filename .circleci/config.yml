@@ -2,6 +2,13 @@
 # See: https://circleci.com/docs/configuration-reference
 version: 2.1
 
+commands:
+  print_pipeline_id:
+    description: Print the pipeline ID (because, reasons)
+    steps:
+      - run: echo $CIRCLE_WORKFLOW_ID
+
+
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/configuration-reference/#jobs
 jobs:
@@ -35,15 +42,13 @@ jobs:
           paths:
             - "output.txt"
   print_output_file:
-     docker: 
+     docker:
       - image: circleci/node:13.8.0
      steps:
       - attach_workspace:
           at: /tmp/myworkspace
-      - run:
-          name: Print content of workspace
-          command: |
-            cat /tmp/myworkspace/output.txt
+      - run: cat /tmp/myworkspace/output.txt
+      - print_pipeline_id
    
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
