@@ -30,34 +30,22 @@ jobs:
           name: Run tests
           command: |
             dotnet build
-  save_hello_world_output:
+  job_that_fails:
     docker: 
       - image: circleci/node:13.8.0
-    working_directory: /tmp
     steps:
-      - run: mkdir -p myworkspace
       - run: echo "Hello sailor" > myworkspace/output.txt
-      - persist_to_workspace:
-          root: /tmp/myworkspace
-          paths:
-            - "output.txt"
-  print_output_file:
-     docker:
-      - image: circleci/node:13.8.0
-     steps:
-      - attach_workspace:
-          at: /tmp/myworkspace
-      - run: cat /tmp/myworkspace/output.txt
       - print_pipeline_id
-   
+      - run: return 1
+      - run: 
+          command: echo "Darn it!"
+          when: on_fail
+
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
   sample: # This is the name of the workflow, feel free to change it to better match your workflow.
     # Inside the workflow, you define the jobs you want to run.
     jobs:
-      - save_hello_world_output
-      - print_output_file:
-          requires:
-            - save_hello_world_output
+      - job_that_fails
 #      - build-and-test
